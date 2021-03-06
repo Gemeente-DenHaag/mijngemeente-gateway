@@ -10,7 +10,7 @@ export class MockTokenAuthenticator implements ITokenAuthenticator {
     const tokenPayload = {
       client_id: clientId,
       iss: clientId,
-      iat: this.getIAT(),
+      iat: this.getIssuedAtTime(),
       user_id: "testUser",
       user_representation: "Test User"
     };
@@ -18,5 +18,5 @@ export class MockTokenAuthenticator implements ITokenAuthenticator {
     return JWTGenerator.Generate(tokenPayload, openZaakSecret);
   }
 
-  private getIAT = (): number => Math.floor(Date.now() / 1000);
+  private getIssuedAtTime = (): number => Math.floor(Date.now() / 1000);
 }
