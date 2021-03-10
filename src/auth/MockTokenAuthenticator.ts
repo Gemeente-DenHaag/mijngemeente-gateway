@@ -1,9 +1,10 @@
 import { ITokenAuthenticator } from "./ITokenAuthenticator";
 import { JWTGenerator } from "./tokens/JWTGenerator";
+import { JWT } from "./JWT";
 
 export class MockTokenAuthenticator implements ITokenAuthenticator {
 
-  GenerateToken(): string {
+  GenerateToken(): JWT {
     const clientId = <string>process.env.OPEN_ZAAK_CLIENT_ID;
     const openZaakSecret = <string>process.env.OPEN_ZAAK_SECRET;
 

@@ -1,3 +1,5 @@
+import { JWT } from "./JWT";
+
 export interface ITokenAuthenticator {
-    GenerateToken: () => string;
+    GenerateToken: () => JWT;
 }
