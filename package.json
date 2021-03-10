@@ -8,7 +8,7 @@
   "license": "EUPL",
   "scripts": {
     "build": "tsc",
-    "serve": "tsc && node dist/index.js"
+    "start": "tsc && node dist/index.js"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
