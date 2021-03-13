@@ -4,14 +4,14 @@ import { JWT } from "./JWT";
 
 export class MockTokenAuthenticator implements ITokenAuthenticator {
 
-  GenerateToken(): JWT {
+  public GenerateToken(): JWT {
     const clientId = <string>process.env.OPEN_ZAAK_CLIENT_ID;
     const openZaakSecret = <string>process.env.OPEN_ZAAK_SECRET;
 
     const tokenPayload = {
       client_id: clientId,
       iss: clientId,
-      iat: this.getIssuedAtTime(),
+      iat: this.getCurrentTimeInSeconds(),
       user_id: "testUser",
       user_representation: "Test User"
     };
@@ -19,5 +19,5 @@ export class MockTokenAuthenticator implements ITokenAuthenticator {
     return JWTGenerator.Generate(tokenPayload, openZaakSecret);
   }
 
-  private getIssuedAtTime = (): number => Math.floor(Date.now() / 1000);
+  private getCurrentTimeInSeconds = (): number => Math.floor(Date.now() / 1000);
 }
