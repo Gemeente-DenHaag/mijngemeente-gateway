@@ -10,8 +10,8 @@ export class JWTGenerator {
    * @param {string} secret - the secret used to sign and encrypt the token
    * @param {boolean} [encrypt] - if true, the token is encrypted with the provided secret
    */
-  static Generate(payload: object, secret: string, encrypt: boolean = false): JWT {
-    let token: string = jwt.sign(JSON.stringify(payload), secret);
+  static Generate(payload: Record<string, unknown>, secret: string, encrypt = false): JWT {
+    const token: string = jwt.sign(JSON.stringify(payload), secret);
     return encrypt ? CryptoJS.AES.encrypt(token, secret).toString() : token;
   }
 }
