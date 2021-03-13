@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": "git@github.com:Gemeente-DenHaag/mijngemeente-gateway.git",
   "author": "Gemeente Den Haag",
-  "license": "EUPL",
+  "license": "EUPL-1.2",
   "scripts": {
     "build": "tsc",
     "start": "tsc && node dist/index.js"
