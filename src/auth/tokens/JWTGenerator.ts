@@ -1,15 +1,17 @@
-import jwt from 'jsonwebtoken';
+import CryptoJS from "crypto-js";
+import jwt from "jsonwebtoken";
 import { JWT } from "../JWT";
 
 export class JWTGenerator {
 
   /**
-   * Generates a JsonWebToken using the provided payload and secret.
+   * Generates a JsonWebToken using the provided payload and secret. If the encrypt
    * @param {object} payload - the payload for the
-   * @param secret
-   * @param encrypt
+   * @param {string} secret - the secret used to sign and encrypt the token
+   * @param {boolean} [encrypt] - if true, the token is encrypted with the provided secret
    */
-  static Generate(payload: object, secret: string): JWT {
-    return jwt.sign(JSON.stringify(payload), secret);
+  static Generate(payload: object, secret: string, encrypt: boolean = false): JWT {
+    let token: string = jwt.sign(JSON.stringify(payload), secret);
+    return encrypt ? CryptoJS.AES.encrypt(token, secret).toString() : token;
   }
 }
