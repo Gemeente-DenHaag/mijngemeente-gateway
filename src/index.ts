@@ -11,7 +11,7 @@ const port = 3030;
 config();
 
 app.use(baseRouter)
-  .use("/authentication", authRouter);
+  .use("/authentication", authRouter)
 
 app
   .use(baseRouter)
