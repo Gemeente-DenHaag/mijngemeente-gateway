@@ -1,7 +1,7 @@
 import { RequestHandler, Request, Response } from "express";
 
 import got from "got";
-import { JWT } from "../auth/JWT";
+import { CreateHeaders } from "../utils/CreateHeader";
 
 interface Query {
   bsn?: string;
@@ -38,13 +38,4 @@ export const ZakenController: RequestHandler = async (
   }
 };
 
-function CreateHeaders(token: JWT) {
-  return {
-    Authorization: token,
-    "Cache-Control": "no-cache",
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    "Accept-Crs": "EPSG:4326",
-    "Content-Crs": "EPSG:4326",
-  }
-}
+
