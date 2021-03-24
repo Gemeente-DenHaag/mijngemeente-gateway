@@ -1,15 +1,14 @@
-import { exception } from "console";
 import { JWT } from "../auth/JWT";
 import { JWTChecker } from "../auth/tokens/JWTChecker";
 
-export function Check(req: any, res: any, next: any) {
+export function VerifyToken(req: any, res: any, next: any) {
   const openZaakSecret = <string>process.env.OPEN_ZAAK_SECRET;
 
-  let jwt: string | null = req.get("Authorization");
+  let jwt: JWT | null = req.get("Authorization");
   
     if (jwt !== null && jwt !== undefined) { 
       jwt = jwt.split(" ")[1];
-      if (JWTChecker.Check(jwt, openZaakSecret)) {
+      if (JWTChecker.Verify(jwt, openZaakSecret)) {
         next();
         return;
       }

@@ -1,9 +1,8 @@
-import CryptoJS from "crypto-js";
 import jwt from "jsonwebtoken";
 import { JWT } from "../JWT";
 
 export class JWTChecker {
-    static Check(token: JWT, secret: string): boolean
+    static Verify(token: JWT, secret: string): boolean
     {
       let status = false;
       try {
