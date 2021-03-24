@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { Check } from "../middleware/JWTAuth";
+import { VerifyToken } from "../middleware/JWTAuthMiddleware";
 
 export const ZaakRouter: Router = express.Router()
     .use(Check)
