@@ -15,8 +15,8 @@ export class MockTokenAuthenticator implements ITokenAuthenticator {
       user_id: "testUser",
       user_representation: "Test User"
     };
-
-    return JWTGenerator.Generate(tokenPayload, openZaakSecret, true);
+    // TODO: Enable encryption
+    return JWTGenerator.Generate(tokenPayload, openZaakSecret, false);
   }
 
   private getCurrentTimeInSeconds = (): number => Math.floor(Date.now() / 1000);
