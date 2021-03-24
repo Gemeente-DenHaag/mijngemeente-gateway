@@ -37,7 +37,7 @@ export const ZakenController: RequestHandler = async (
     // pass on the response immediately
     res.send(JSON.parse(response.body));
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(500).send();
   }
 };
