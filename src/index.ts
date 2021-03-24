@@ -1,6 +1,6 @@
 import express, { Express } from "express";
-import { baseRouter } from "./routes/BaseGatewayRoutes";
-import { authRouter } from "./routes/AuthenticationRoutes";
+import { BaseRouter } from "./routes/BaseGatewayRoutes";
+import { AuthRouter } from "./routes/AuthenticationRoutes";
 import { ZaakRouter } from "./routes/ZaakRoutes";
 
 import { config } from "dotenv";
@@ -10,11 +10,11 @@ const port = 3030;
 
 config();
 
-app.use(baseRouter)
-  .use("/authentication", authRouter)
+app.use(BaseRouter)
+  .use("/authentication", AuthRouter)
 
 app
-  .use(baseRouter)
+  .use(BaseRouter)
   .use("/zaken", ZaakRouter);
 
 app.listen(port, () => {

@@ -7,7 +7,7 @@ interface Query {
   bsn?: string;
 }
 
-export const zakenHandler: RequestHandler = async (
+export const ZakenController: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
@@ -21,7 +21,7 @@ export const zakenHandler: RequestHandler = async (
       return;
     }
     
-    const headers = createHeaders(token);
+    const headers = CreateHeaders(token);
     let searchParams = {};
 
     if (query.bsn !== undefined) {
@@ -38,7 +38,7 @@ export const zakenHandler: RequestHandler = async (
   }
 };
 
-function createHeaders(token: JWT) {
+function CreateHeaders(token: JWT) {
   return {
     Authorization: token,
     "Cache-Control": "no-cache",
@@ -48,5 +48,3 @@ function createHeaders(token: JWT) {
     "Content-Crs": "EPSG:4326",
   }
 }
-
-
