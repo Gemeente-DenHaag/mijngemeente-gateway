@@ -1,7 +1,8 @@
-import { JWT } from "../auth/JWT";
-import got from "got/dist/source";
 import { RequestHandler, Request, Response } from "express";
 import { CreateHeaders } from "../utils/CreateHeader";
+import { JWT } from "../auth/JWT";
+import got from "got";
+
 
 interface Query {
     zaak?: string;
