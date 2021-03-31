@@ -57,12 +57,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{gateway_url}}/zaken/statussen",
+					"raw": "{{gateway_url}}/statussen",
 					"host": [
 						"{{gateway_url}}"
 					],
 					"path": [
-						"zaken",
 						"statussen"
 					]
 				}
