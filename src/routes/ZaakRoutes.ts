@@ -4,4 +4,4 @@ import { ZakenController } from "../controllers/ZakenController";
 
 export const ZaakRouter: Router = express.Router()
     .use(VerifyToken)
-    .get("/", ZakenController)
+    .get("/", ZakenController);
