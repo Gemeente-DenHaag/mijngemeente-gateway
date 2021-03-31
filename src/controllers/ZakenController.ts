@@ -35,7 +35,6 @@ export const ZakenController: RequestHandler = async (
       searchParams,
     });
     // pass on the response immediately
-    res.type('json');
     res.send(response.body);
 
   } catch (err) {

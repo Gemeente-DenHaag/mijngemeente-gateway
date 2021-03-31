@@ -37,7 +37,6 @@ export const StatussenController: RequestHandler = async (
 
     try {
         const response = await got(url, options);
-        res.type('json');
         res.send(response.body);
     }
     catch (err) {
