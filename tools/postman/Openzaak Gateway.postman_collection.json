@@ -1,0 +1,122 @@
+{
+	"info": {
+		"_postman_id": "b20439f8-b649-4e3a-ac77-cf939e89ee0c",
+		"name": "Openzaak Gateway",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Mock Auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"jwt_local_token\", pm.response.json().token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{gateway_url}}/authentication/mock",
+					"host": [
+						"{{gateway_url}}"
+					],
+					"path": [
+						"authentication",
+						"mock"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ping",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{gateway_url}}/ping",
+					"host": [
+						"{{gateway_url}}"
+					],
+					"path": [
+						"ping"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Statuses",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{gateway_url}}/zaken/statussen",
+					"host": [
+						"{{gateway_url}}"
+					],
+					"path": [
+						"zaken",
+						"statussen"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Zaken",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": null
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwt_local_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"var request = {",
+					"    url: `${pm.environment.get('gateway_url')}/authentication/mock`,",
+					"    method: 'GET',",
+					"};",
+					"",
+					"pm.sendRequest(request, function (err, res){",
+					"    if (res !== null)",
+					"    {",
+					"        pm.environment.set('jwt_local_token', res.json().token);",
+					"    }",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

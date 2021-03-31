@@ -1,0 +1,773 @@
+{
+	"info": {
+		"_postman_id": "569d567f-eb2f-4b25-a5a0-995ada895ee9",
+		"name": "OpenZaak direct",
+		"description": "A simple collection to verify that Open Zaak works as expected\n\nTo make this collection work, the following environment variables must be supplied:\n\n* `zrc_url`: url that points to the Zaken API\n* `ztc_url`: url that points to the Catalogi API\n* `client_id` and `secret`: valid credentials that have an `Applicatie` with superuser permissions",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Retrieve existing Catalogus",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"catalogus_url\", pm.response.json().results[0].url);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ztc_url}}/catalogussen?domein=ZGWT",
+					"host": [
+						"{{ztc_url}}"
+					],
+					"path": [
+						"catalogussen"
+					],
+					"query": [
+						{
+							"key": "domein",
+							"value": "ZGWT"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve existing zaaktypen",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ztc_url}}/zaaktypen",
+					"host": [
+						"{{ztc_url}}"
+					],
+					"path": [
+						"zaaktypen"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Catalogus",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"catalogus_url\", pm.response.json().url);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"domein\": \"ZGWT\",\n\t\"rsin\": \"000000000\",\n\t\"contactpersoonBeheerNaam\": \"Test Persoon\"\n}"
+				},
+				"url": {
+					"raw": "{{ztc_url}}/catalogussen",
+					"host": [
+						"{{ztc_url}}"
+					],
+					"path": [
+						"catalogussen"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Procestype",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"procestype_url\", pm.response.json().results[0].procesType);",
+							"pm.globals.set(\"selectielijstklasse_url\", pm.response.json().results[0].url);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://referentielijsten-api.vng.cloud/api/v1/resultaten",
+					"protocol": "https",
+					"host": [
+						"referentielijsten-api",
+						"vng",
+						"cloud"
+					],
+					"path": [
+						"api",
+						"v1",
+						"resultaten"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Zaaktype",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var res = pm.response.json();",
+							"pm.globals.set(\"zaaktype_url\", res.url);",
+							"",
+							"pm.test(\"ZaakType aanmaken geeft 201\", function() {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"identificatie\": \"1\",\n    \"omschrijving\": \"zrc_tests_1\",\n    \"vertrouwelijkheidaanduiding\": \"openbaar\",\n    \"doel\": \"test doel\",\n    \"aanleiding\": \"test aanleiding\",\n    \"indicatieInternOfExtern\": \"extern\",\n    \"handelingInitiator\": \"indienen\",\n    \"onderwerp\": \"openbare ruimte\",\n    \"handelingBehandelaar\": \"behandelen\",\n    \"doorlooptijd\": \"P10D\",\n    \"opschortingEnAanhoudingMogelijk\": false,\n    \"verlengingMogelijk\": true,\n    \"publicatieIndicatie\": false,\n    \"productenOfDiensten\": [\n        \"https://ref.tst.vng.cloud/standaard/\"\n    ],\n    \"selectielijstProcestype\": \"{{procestype_url}}\",\n    \"referentieproces\": {\n        \"naam\": \"test\",\n        \"link\": \"\"\n    },\n    \"catalogus\": \"{{catalogus_url}}\",\n    \"informatieobjecttypen\": [],\n    \"besluittypen\": [],\n    \"gerelateerdeZaaktypen\": [],\n    \"beginGeldigheid\": \"2019-01-01\",\n    \"versiedatum\": \"2019-01-01\",\n    \"concept\": true,\n    \"verlengingstermijn\": \"P5D\"\n}"
+				},
+				"url": {
+					"raw": "{{ztc_url}}/zaaktypen",
+					"host": [
+						"{{ztc_url}}"
+					],
+					"path": [
+						"zaaktypen"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Publish Zaaktype",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{zaaktype_url}}/publish",
+					"host": [
+						"{{zaaktype_url}}"
+					],
+					"path": [
+						"publish"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Zaak",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if(pm.response.code == 201) {",
+							"    pm.globals.set(\"zaak_url\", pm.response.json().url);",
+							"}",
+							"",
+							"pm.test(\"Zaak aanmaken geeft 201\", function() {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Crs",
+						"value": "EPSG:4326"
+					},
+					{
+						"key": "Content-Crs",
+						"value": "EPSG:4326"
+					},
+					{
+						"key": "X-NLX-Request-Application-Id",
+						"value": "321",
+						"type": "text"
+					},
+					{
+						"key": "X-NLX-Request-User-Id",
+						"value": "123"
+					},
+					{
+						"key": "X-Audit-Toelichting",
+						"value": "toelichting"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"bronorganisatie\": \"000000000\",\n    \"omschrijving\": \"string\",\n    \"toelichting\": \"string\",\n    \"registratiedatum\": \"2019-04-09\",\n    \"verantwoordelijkeOrganisatie\": \"000000000\",\n    \"zaaktype\": \"{{zaaktype_url}}\",\n    \"startdatum\": \"2019-04-09\",\n    \"einddatumGepland\": \"2019-04-20\",\n    \"uiterlijkeEinddatumAfdoening\": \"2019-04-09\",\n    \"publicatiedatum\": \"2019-04-09\",\n    \"vertrouwelijkheidaanduiding\": \"openbaar\",\n    \"betalingsindicatie\": \"geheel\",\n    \"laatsteBetaalDatum\": \"2019-01-01\",\n    \"zaakgeometrie\": {\n        \"type\": \"Point\",\n        \"coordinates\": [\n            53,\n            5\n        ]\n    },\n    \"opschorting\": {\n        \"indicatie\": true,\n        \"reden\": \"string\"\n    },\n    \"selectielijstklasse\": \"{{selectielijstklasse_url}}\",\n    \"archiefstatus\": \"nog_te_archiveren\"\n}"
+				},
+				"url": {
+					"raw": "{{zrc_url}}/zaken",
+					"host": [
+						"{{zrc_url}}"
+					],
+					"path": [
+						"zaken"
+					]
+				},
+				"description": "Indien geen identificatie gegeven is, dan wordt deze automatisch\ngegenereerd. De identificatie moet uniek zijn binnen de bronorganisatie.\n\n**Er wordt gevalideerd op**:\n- `zaaktype` moet een geldige URL zijn.\n- `laatsteBetaaldatum` mag niet in de toekomst liggen.\n- `laatsteBetaaldatum` mag niet gezet worden als de betalingsindicatie\n  \"nvt\" is.\n- `archiefnominatie` moet een waarde hebben indien `archiefstatus` niet de\n  waarde \"nog_te_archiveren\" heeft.\n- `archiefactiedatum` moet een waarde hebben indien `archiefstatus` niet de\n  waarde \"nog_te_archiveren\" heeft.\n- `archiefstatus` kan alleen een waarde anders dan \"nog_te_archiveren\"\n  hebben indien van alle gerelateeerde INFORMATIEOBJECTen het attribuut\n  `status` de waarde \"gearchiveerd\" heeft."
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve Zaken list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Alle ZAAKen opvragen geeft 200\", function() {",
+							"    pm.response.to.have.status(200);",
+							"    ",
+							"    var data = pm.response.json();",
+							"    pm.expect(data.count).to.be.equal(1);",
+							"    pm.expect(data.results[0].url).to.be.equal(pm.globals.get(\"zaak_url\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept-Crs",
+						"value": "EPSG:4326"
+					},
+					{
+						"key": "Content-Crs",
+						"value": "EPSG:4326"
+					}
+				],
+				"url": {
+					"raw": "{{zrc_url}}/zaken",
+					"host": [
+						"{{zrc_url}}"
+					],
+					"path": [
+						"zaken"
+					],
+					"query": [
+						{
+							"key": "rol__betrokkeneIdentificatie__natuurlijkPersoon__inpBsn",
+							"value": "999993847",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Deze lijst kan gefilterd wordt met query-string parameters.\n\n**Opmerking**\n- er worden enkel zaken getoond van de zaaktypes waar u toe geautoriseerd\n  bent."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Zaak",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.unset(\"global_zaak_url\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept-Crs",
+						"value": "EPSG:4326",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{zaak_url}}",
+					"host": [
+						"{{zaak_url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Zaaktype",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.unset(\"zaaktype_url\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{zaaktype_url}}",
+					"host": [
+						"{{zaaktype_url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Statussen",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{zrc_url}}/statussen",
+					"host": [
+						"{{zrc_url}}"
+					],
+					"path": [
+						"statussen"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve Rollen",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{zrc_url}}/rollen",
+					"host": [
+						"{{zrc_url}}"
+					],
+					"path": [
+						"rollen"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Rol",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"zaak\": \"{{zaak_url}}\",\r\n    \"betrokkeneType\": \"natuurlijk_persoon\",\r\n    \"roltype\": \"{{roltype_url}}\",\r\n    \"roltoelichting\": \"vergunning aanvrager\",\r\n    \"betrokkeneIdentificatie\": {\r\n        \"inpBsn\": \"999993847\",\r\n        \"geslachtsnaam\": \"Robot\",\r\n        \"voorletters\": \"M\",\r\n        \"voornamen\": \"Mister\",\r\n        \"geslachtsaanduiding\": \"m\",\r\n        \"geboortedatum\": \"24-06-2015\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{zrc_url}}/rollen",
+					"host": [
+						"{{zrc_url}}"
+					],
+					"path": [
+						"rollen"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Roltype",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"roltype_url\", pm.response.json().url);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"zaaktype\": \"{{zaaktype_url}}\",\r\n    \"omschrijving\": \"testburger\",\r\n    \"omschrijvingGeneriek\": \"belanghebbende\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ztc_url}}/roltypen",
+					"host": [
+						"{{ztc_url}}"
+					],
+					"path": [
+						"roltypen"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"status_url\", pm.response.json().url);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"zaak\": \"{{zaak_url}}\",\r\n    \"statustype\": \"{{statustype_url}}\",\r\n    \"datumStatusGezet\": \"2021-03-24T09:51:40Z\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{zrc_url}}/statussen",
+					"host": [
+						"{{zrc_url}}"
+					],
+					"path": [
+						"statussen"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve statussen",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"status_url\", pm.response.json().url);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"zaak\": \"{{zaak_url}}\",\r\n    \"statustype\": \"{{statustype_url}}\",\r\n    \"datumStatusGezet\": \"2021-03-24T09:51:40Z\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{zrc_url}}/statussen",
+					"host": [
+						"{{zrc_url}}"
+					],
+					"path": [
+						"statussen"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Statustype",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"statustype_url\", pm.response.json().url);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"omschrijving\": \"Vers van de pers\",\r\n    \"zaaktype\": \"{{zaaktype_url}}\",\r\n    \"volgnummer\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ztc_url}}/statustypen",
+					"host": [
+						"{{ztc_url}}"
+					],
+					"path": [
+						"statustypen"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Statustypen",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ztc_url}}/statustypen",
+					"host": [
+						"{{ztc_url}}"
+					],
+					"path": [
+						"statustypen"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create resultaattype",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"resultaattype_url\", pm.response.json().url);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"zaaktype\": \"{{zaaktype_url}}\",\r\n    \"omschrijving\": \"Prachtig\",\r\n    \"resultaattypeomschrijving\": \"https://selectielijst.openzaak.nl/api/v1/resultaattypeomschrijvingen/e6a0c939-3404-45b0-88e3-76c94fb80ea7\",\r\n    \"selectielijstklasse\": \"https://selectielijst.openzaak.nl/api/v1/resultaten/8af64c99-a168-40dd-8afd-9fbe0597b6dc\",\r\n    \"archiefnominatie\": \"blijvend_bewaren\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ztc_url}}/resultaattypen",
+					"host": [
+						"{{ztc_url}}"
+					],
+					"path": [
+						"resultaattypen"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Resultaattypen",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ztc_url}}/resultaattypen",
+					"host": [
+						"{{ztc_url}}"
+					],
+					"path": [
+						"resultaattypen"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwt_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"function base64url(source) {",
+					"\t// Encode in classical base64",
+					"\tencodedSource = CryptoJS.enc.Base64.stringify(source);",
+					"",
+					"\t// Remove padding equal characters",
+					"\tencodedSource = encodedSource.replace(/=+$/, '');",
+					"",
+					"\t// Replace characters according to base64url specifications",
+					"\tencodedSource = encodedSource.replace(/\\+/g, '-');",
+					"\tencodedSource = encodedSource.replace(/\\//g, '_');",
+					"",
+					"\treturn encodedSource;",
+					"}",
+					"",
+					"function addIAT(request) {",
+					"// \tvar iat = Math.floor(Date.now() / 1000) + 257;",
+					"    var iat = Math.floor(Date.now() / 1000);",
+					"\tdata.iat = iat;",
+					"\treturn data;",
+					"}",
+					"",
+					"",
+					"var header = {",
+					"\t\"typ\": \"JWT\",",
+					"\t\"alg\": \"HS256\"",
+					"};",
+					"",
+					"var data = {",
+					"    \"iss\": pm.environment.get(\"client_id\"),",
+					"    \"client_id\": pm.environment.get(\"client_id\"),",
+					"    \"user_id\": \"123\",",
+					"    \"user_representation\": \"Demo User\"",
+					"};",
+					"",
+					"data = addIAT(data);",
+					"",
+					"var secret = pm.environment.get(\"secret\");",
+					"",
+					"// encode header",
+					"var stringifiedHeader = CryptoJS.enc.Utf8.parse(JSON.stringify(header));",
+					"var encodedHeader = base64url(stringifiedHeader);",
+					"",
+					"// encode data",
+					"var stringifiedData = CryptoJS.enc.Utf8.parse(JSON.stringify(data));",
+					"var encodedData = base64url(stringifiedData);",
+					"",
+					"// build token",
+					"var token = encodedHeader + \".\" + encodedData;",
+					"",
+					"var signature = CryptoJS.HmacSHA256(token, secret);",
+					"signature = base64url(signature);",
+					"",
+					"var signedToken = token + \".\" + signature;",
+					"",
+					"pm.globals.set(\"jwt_token\", signedToken);"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"value": "",
+			"disabled": true
+		}
+	]
+}
