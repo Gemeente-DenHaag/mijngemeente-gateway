@@ -30,7 +30,8 @@ export const ZakenController: RequestHandler = async (
 
     const response = await got(openZaakUrl + "/zaken", { headers, searchParams });
     // pass on the response immediately
-    res.send(JSON.parse(response.body));
+    res.type('json');
+    res.send(response.body);
 
   } catch (err) {
     console.log(err);
