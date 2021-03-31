@@ -7,7 +7,7 @@ interface Query {
     zaak?: string;
 }
 
-export const ZaakStatusController: RequestHandler = async (
+export const StatussenController: RequestHandler = async (
     req: Request,
     res: Response
 ) => {
@@ -24,7 +24,7 @@ export const ZaakStatusController: RequestHandler = async (
     let url: string;
 
     if (query.zaak !== undefined) {
-        url = `${openZaakURL}/statussen/zaak?=${query.zaak}`;
+        url = `${openZaakURL}/statussen?zaak=${query.zaak}`;
     }
     else {
         url = `${openZaakURL}/statussen`
