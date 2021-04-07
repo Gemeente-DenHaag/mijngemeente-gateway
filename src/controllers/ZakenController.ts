@@ -1,5 +1,4 @@
 import { RequestHandler, Request, Response } from "express";
-
 import got from "got";
 import { CreateHeaders } from "../utils/CreateHeader";
 
@@ -13,14 +12,9 @@ export const ZakenController: RequestHandler = async (
 ) => {
   const openZaakUrl = <string>process.env.OPEN_ZAAK_URL;
   const query = req.query as Query;
-
-  const token = req.get("Authorization");
-  if (token === undefined || token === null) {
-    res.status(401).send();
-    return;
-  }
-
+  const token = <string>req.headers.authorization;
   const headers = CreateHeaders(token);
+
   let searchParams = {};
 
   if (query.bsn !== undefined) {
@@ -35,7 +29,8 @@ export const ZakenController: RequestHandler = async (
       searchParams,
     });
     // pass on the response immediately
-    res.send(JSON.parse(response.body));
+    res.send(response.body);
+
   } catch (err) {
     console.error(err);
     res.status(500).send();

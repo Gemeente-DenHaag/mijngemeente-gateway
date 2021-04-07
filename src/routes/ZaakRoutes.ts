@@ -1,13 +1,9 @@
 import express, { Router } from "express";
-import { VerifyToken } from "../middleware/JWTAuthMiddleware";
+import { OpenZaakMiddleWare } from "../middleware/OpenZaakMiddleWare";
 import { ZakenController } from "../controllers/ZakenController";
+import { StatussenController } from "../controllers/StatussenController";
 
 export const ZaakRouter: Router = express.Router()
-    .use(VerifyToken)
-    .get("/", ZakenController)
-    .get("/statussen", (req, res) => {
-        console.log("hello from /statussen");
-        res.send(
-            "test"
-        )
-    });
+    .use(OpenZaakMiddleWare)
+    .get("/zaken", ZakenController)
+    .get("/statussen", StatussenController);
