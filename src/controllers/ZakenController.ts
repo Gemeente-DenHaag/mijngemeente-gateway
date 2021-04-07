@@ -1,5 +1,4 @@
 import { RequestHandler, Request, Response } from "express";
-
 import got from "got";
 import { CreateHeaders } from "../utils/CreateHeader";
 
@@ -15,7 +14,6 @@ export const ZakenController: RequestHandler = async (
   const query = req.query as Query;
   const token = <string>req.headers.authorization;
   const headers = CreateHeaders(token);
-  
 
   let searchParams = {};
 

@@ -3,7 +3,6 @@ import { CreateHeaders } from "../utils/CreateHeader";
 import { JWT } from "../auth/JWT";
 import got from "got";
 
-
 interface Query {
     zaak?: string;
 }
@@ -16,8 +15,6 @@ export const StatussenController: RequestHandler = async (
     const token: JWT = <string>req.headers.authorization;
     const query: Query | undefined = req.query; 
     const headers = CreateHeaders(token);
-
-    console.info(headers);
 
     let url: string;
 
