@@ -1,10 +1,11 @@
 import { JWT } from "../auth/JWT";
 import { JWTChecker } from "../auth/tokens/JWTChecker";
+import express from "express";
 
-export function OpenZaakMiddleWare(req: any, res: any, next: any) {
+export function OpenZaakMiddleWare(req: express.Request, res: express.Response, next: any) {
   const openZaakSecret = <string>process.env.OPEN_ZAAK_SECRET;
 
-  let jwt: JWT | null = req.get("Authorization");
+  let jwt: JWT | undefined = req.get("Authorization");
   
     if (jwt !== null && jwt !== undefined) { 
       jwt = jwt.split(" ")[1];
