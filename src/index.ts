@@ -2,7 +2,6 @@ import express, { Express } from "express";
 import { BaseRouter } from "./routes/BaseGatewayRoutes";
 import { AuthRouter } from "./routes/AuthenticationRoutes";
 import { ZaakRouter } from "./routes/ZaakRoutes";
-import { StatussenRouter } from "./routes/StatusRoutes";
 
 import { config } from "dotenv";
 
