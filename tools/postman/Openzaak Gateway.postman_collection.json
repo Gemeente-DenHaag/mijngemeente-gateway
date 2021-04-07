@@ -57,11 +57,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{gateway_url}}/statussen",
+					"raw": "{{gateway_url}}/zaken/statussen",
 					"host": [
 						"{{gateway_url}}"
 					],
 					"path": [
+						"zaken",
 						"statussen"
 					]
 				}
@@ -73,7 +74,16 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": null
+				"url": {
+					"raw": "{{gateway_url}}/zaken/zaken",
+					"host": [
+						"{{gateway_url}}"
+					],
+					"path": [
+						"zaken",
+						"zaken"
+					]
+				}
 			},
 			"response": []
 		}
