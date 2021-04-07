@@ -18,10 +18,6 @@ app
   .use(BaseRouter)
   .use("/zaken", ZaakRouter);
 
-app
-  .use(BaseRouter)
-  .use("/statussen", StatussenRouter);
-
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
