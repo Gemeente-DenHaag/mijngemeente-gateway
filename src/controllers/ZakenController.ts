@@ -13,14 +13,10 @@ export const ZakenController: RequestHandler = async (
 ) => {
   const openZaakUrl = <string>process.env.OPEN_ZAAK_URL;
   const query = req.query as Query;
-
-  const token = req.get("Authorization");
-  if (token === undefined || token === null) {
-    res.status(401).send();
-    return;
-  }
-
+  const token = <string>req.headers.authorization;
   const headers = CreateHeaders(token);
+  
+
   let searchParams = {};
 
   if (query.bsn !== undefined) {

@@ -12,15 +12,12 @@ export const StatussenController: RequestHandler = async (
     req: Request,
     res: Response
 ) => {
-    const openZaakURL = <string>process.env.OPEN_ZAAK_URL;
-    const token: JWT | undefined = req.headers.authorization;
-    const query: Query | undefined = req.query;
-
-    if (token === undefined) {
-        res.status(401).send();
-        return;
-    }
+    const openZaakURL: string = <string>process.env.OPEN_ZAAK_URL;
+    const token: JWT = <string>req.headers.authorization;
+    const query: Query | undefined = req.query; 
     const headers = CreateHeaders(token);
+
+    console.info(headers);
 
     let url: string;
 
